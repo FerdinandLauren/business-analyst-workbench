@@ -61,6 +61,13 @@ class TextHelperTests(unittest.TestCase):
         self.assertEqual(split_sentences(""), [])
         self.assertEqual(split_sentences("A\nB; C"), ["A", "B", "C"])
 
+    def test_split_sentences_cleans_markdown_notes(self):
+        notes = "# Notes\n\n- Requests arrive by email.\n- **Approvals** happen in email.\n"
+        self.assertEqual(
+            split_sentences(notes),
+            ["Requests arrive by email", "Approvals happen in email"],
+        )
+
     def test_normalize(self):
         self.assertEqual(normalize("  Jadwal   Sering  "), "jadwal sering")
 

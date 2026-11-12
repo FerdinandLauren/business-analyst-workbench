@@ -161,11 +161,33 @@ def _pattern(term: str) -> re.Pattern[str]:
     return cached
 
 
+_MARKDOWN_HEADING = re.compile(r"^\s{0,3}#{1,6}\s")
+_MARKDOWN_MARKER = re.compile(r"^\s*(?:[-*+]\s+|\d+[.)]\s+)")
+_MARKDOWN_EMPHASIS = re.compile(r"[*_`]{1,3}")
+
+
+def _clean_line(line: str) -> str:
+    """Drop notes formatting (headings, bullets, emphasis) before splitting."""
+    if _MARKDOWN_HEADING.match(line):
+        return ""
+    line = _MARKDOWN_MARKER.sub("", line)
+    return _MARKDOWN_EMPHASIS.sub("", line)
+
+
 def split_sentences(text: str) -> list[str]:
-    """Split on sentence punctuation and newlines, dropping empty fragments."""
+    """Split on sentence punctuation and newlines, dropping empty fragments.
+
+    Markdown notes are accepted as input: headings are skipped and bullet or
+    emphasis markers are removed so the fragment reads like a sentence.
+    """
     if not text:
         return []
-    parts = re.split(r"[.!?;\n]+", text)
+    parts: list[str] = []
+    for line in text.splitlines():
+        cleaned = _clean_line(line)
+        if not cleaned.strip():
+            continue
+        parts.extend(re.split(r"[.!?;]+", cleaned))
     return [part.strip() for part in parts if part.strip()]
 
 

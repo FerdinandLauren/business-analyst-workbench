@@ -1,139 +1,118 @@
-# AI Business Analyst Workbench
+# Business Analyst Workbench
 
-A portfolio-grade, balanced Business Analysis + AI + Automation project.
+A small tool that turns plain-language business notes into reviewable analysis
+artifacts: candidate requirements, a draft BRD, process-gap observations, and
+UAT scenarios.
 
-**Scenario:** A fictional manufacturing company wants to improve its purchase-requisition and approval process. The workbench turns a business problem into structured requirements, a draft BRD, process-gap analysis, and UAT scenarios.
+It is not tied to the procurement demo. Paste notes about a clinic, a warehouse,
+a support desk, or any other process and the same engine runs. English and
+Indonesian are both supported, including the generated documents.
 
-> This is a learning and portfolio project. It is not an enterprise procurement system, does not approve purchases, and does not replace human review. Generated requirements and test cases are drafts.
+> Portfolio prototype. Every output is a draft and must be checked by a human
+> stakeholder. The app does not approve requests, move money, or replace an
+> analyst.
 
-## What this project demonstrates
+## Features
 
-- Business problem framing and stakeholder analysis
-- Functional and non-functional requirements
-- As-Is / To-Be process analysis
-- Draft BRD generation
-- UAT scenario generation and CSV export
-- AI-assisted analysis with a deterministic local fallback
-- A sample n8n workflow for a human-reviewed document-intake process
-- Basic test coverage and documented evaluation criteria
+- **Generic input.** Write one sentence per problem or expectation; the engine
+  splits the text and classifies each sentence. No scenario-specific templates.
+- **Deterministic by default.** The local engine is rule-based: no API key, no
+  network, no data leaving the machine.
+- **Language toggle (EN / ID)** in the top-right corner. The interface, tables,
+  BRD, and UAT text follow the selected language. The language is auto-detected
+  from the input until you pick one by hand.
+- **Four workspaces.** Requirement analyzer, BRD draft, process analyzer, and
+  UAT generator, each with its own input so one tab never borrows another tab's
+  text.
+- **Exports.** Requirements and UAT scenarios download as CSV; the BRD downloads
+  as Markdown.
+- **Optional AI drafting.** A visitor can paste their own OpenAI-compatible API
+  key in the sidebar. If the call fails or no key is present, the app quietly
+  falls back to the local draft.
 
 ## Quick start
 
-### 1. Requirements
+```bash
+python -m venv .venv
 
-- Python 3.10+
-- Git (optional, for publishing to GitHub)
-
-### 2. Create a virtual environment
-
-**Windows PowerShell**
-```powershell
-py -3.11 -m venv .venv
+# Windows PowerShell
 .venv\Scripts\Activate.ps1
-```
 
-**macOS / Linux**
-```bash
-python3 -m venv .venv
+# macOS / Linux
 source .venv/bin/activate
-```
 
-### 3. Install dependencies and run
-
-```bash
 pip install -r requirements.txt
-streamlit run app/streamlit_app.py
+python -m streamlit run app/streamlit_app.py
 ```
 
-Open the local URL printed by Streamlit (usually `http://localhost:8501`).
+Open `http://localhost:8501`. Use `python -m streamlit` rather than the bare
+`streamlit` command if the launcher is not on your PATH.
 
-## Optional: enable AI-assisted drafting
-
-The application works without an API key using a local rule-based draft generator. To enable an OpenAI-compatible API:
-
-1. Copy `.env.example` to `.env`.
-2. Add your API key and a model available to your account.
-3. Install dependencies (the `openai` package is included).
-4. Restart Streamlit.
-
-```env
-OPENAI_API_KEY=your_key_here
-OPENAI_MODEL=gpt-4.1-mini
-```
-
-Do not commit `.env` or expose API keys in screenshots, code, or GitHub. If AI is unavailable, use the local fallback and label the result as a draft.
-
-## Project structure
-
-```text
-ai-business-analyst-workbench/
-├── app/                 # Streamlit interface
-├── src/                 # Reusable analysis and generation logic
-├── docs/                # Business analysis deliverables
-├── diagrams/            # Mermaid process and architecture diagrams
-├── ai/
-│   ├── prompts/          # Prompt templates
-│   └── evaluation/       # Evaluation rubric and sample cases
-├── automation/          # Example n8n workflow (human approval required)
-├── samples/             # Fictional business scenario input
-├── tests/               # Unit tests
-├── .env.example
-├── .gitignore
-└── requirements.txt
-```
-
-## Main application modules
-
-1. **Requirement Analyzer** — extracts candidate requirements from a problem statement and classifies them.
-2. **BRD Draft** — creates a structured first draft for analyst review.
-3. **Process Analyzer** — compares current and proposed processes and highlights likely control gaps.
-4. **UAT Generator** — creates test scenarios and acceptance criteria for review.
-5. **Export** — download generated outputs as Markdown or CSV.
-
-## Example scenario
-
-A requester submits a purchase request by email or spreadsheet. Approvals happen through separate messages, and requesters cannot easily see status. The proposed workflow centralizes request intake, validates required fields, routes approvals based on policy, and records status changes. A person remains responsible for every approval decision.
-
-See [`docs/BRD.md`](docs/BRD.md), [`docs/process-analysis.md`](docs/process-analysis.md), and [`docs/UAT.md`](docs/UAT.md).
-
-## Quality and limitations
-
-- The sample company, people, and process are fictional.
-- AI output may be incomplete, inaccurate, or overly confident. Verify every requirement with stakeholders.
-- The sample automation is illustrative; configure credentials, data retention, access controls, and approval policies before any real deployment.
-- This project does not connect to an ERP, issue purchase orders, or make financial decisions.
-- Never upload confidential company or personal data to an AI service without authorization.
-
-## Run tests
+Run the tests with:
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-## Publish to GitHub
+## How the engine decides
 
-Create an empty repository on GitHub, then run:
+Every sentence goes through the same three steps, all in `src/`:
 
-```bash
-git init
-git add .
-git commit -m "Initial AI Business Analyst Workbench"
-git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/ai-business-analyst-workbench.git
-git push -u origin main
+1. **Detect a topic.** A dictionary maps terms to categories such as
+   `scheduling`, `payment`, `approval`, `reporting`, and `integration`. Matching
+   is word-boundary based, so `WhatsApp` does not match `sap`.
+2. **Detect the pain.** A second dictionary maps wording such as "manual",
+   "bentrok", "salah", or "tidak tahu" to one of five pain groups:
+   consolidation, visibility, accuracy, automation, or none.
+3. **Fill a template.** The statement combines the pain verb, the category noun,
+   and the expected outcome.
+
+Example:
+
+```text
+Input:  Kasir mencatat pembayaran manual.
+Topic:  payment
+Pain:   automation
+Output: Sistem harus mengotomatiskan pencatatan pembayaran agar pekerjaan
+        manual berkurang.
 ```
 
-Replace `YOUR-USERNAME` with your GitHub username.
+Sentences that match nothing become `unclassified` requirements with
+`needs_review` status and an open question, so the gap is visible instead of
+being silently dropped. The BRD lists those questions in its final sections,
+and process areas with no evidence are reported as `unspecified`.
 
-## Suggested portfolio description
+## Project structure
 
-**AI Business Analyst Workbench** is a prototype that supports the early stages of business and systems analysis. It transforms a fictional procurement problem into draft requirements, BRD sections, process-gap observations, and UAT scenarios. The project combines structured Business Analysis methods with AI-assisted drafting and a human-in-the-loop automation concept.
+```text
+app/streamlit_app.py     Streamlit shell: layout, per-tab state, language toggle
+src/i18n.py              English/Indonesian strings and language detection
+src/text.py              Word-boundary dictionaries, sentence splitting
+src/requirements.py      Requirement extraction, priorities, table rows
+src/process.py           As-Is / To-Be comparison per process area
+src/uat.py               Category-aware UAT scenarios
+src/brd.py               Markdown BRD assembled from the same inputs
+src/llm.py               Optional user-supplied key, never required
+tests/                   Unit and end-to-end tests
+samples/                 Fictional stakeholder notes used by the tests
+docs/                    Plan, design notes, sample deliverables
+ai/prompts/              Prompt templates for optional AI drafting
+```
 
-## Roadmap
+## Limitations
 
-- [ ] Validate generated requirements with a mock stakeholder interview
-- [ ] Add BPMN diagrams created in a modeling tool
-- [ ] Add role-based access and audit trail for a production-grade prototype
-- [ ] Add a database-backed project history
-- [ ] Evaluate AI output against the rubric in `ai/evaluation/rubric.md`
-- [ ] Add a sample Power BI dashboard using synthetic data
+- Classification is heuristic. Synonyms outside the dictionaries fall into
+  `unclassified`; extend the tables in `src/text.py` rather than trusting a
+  guess.
+- One sentence produces at most one requirement, so compound sentences should
+  be split by the author.
+- Priorities are category-based defaults, not a substitute for stakeholder
+  negotiation.
+- AI output can be incomplete or overconfident. The app labels which engine
+  produced a draft, and human review is still mandatory.
+- The sample company and data are fictional. Do not paste confidential data into
+  a third-party API without authorization.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

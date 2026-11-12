@@ -58,12 +58,12 @@ class RequirementTests(unittest.TestCase):
         self.assertEqual(len({req.id for req in reqs}), len(reqs))
 
     def test_unclassified_gets_review_status_and_question(self):
-        reqs = extract_requirements("Pasien harus menelepon untuk mendaftar.", "id")
+        reqs = extract_requirements("Kami butuh suasana kerja yang lebih tenang.", "id")
         self.assertEqual(len(reqs), 1)
         req = reqs[0]
         self.assertEqual(req.category, "unclassified")
         self.assertEqual(req.status, "needs_review")
-        self.assertIn("Pasien harus menelepon", req.clarification)
+        self.assertIn("suasana kerja", req.clarification)
         self.assertTrue(req.statement.startswith("Sistem harus mendukung:"), req.statement)
 
     def test_audit_is_nonfunctional(self):

@@ -28,8 +28,9 @@ class TextHelperTests(unittest.TestCase):
         self.assertTrue(has_term("semua jadwalnya bentrok", "jadwal"))
 
     def test_detect_categories_whatsapp_is_not_integration(self):
-        self.assertEqual(detect_categories("Pasien mendaftar lewat WhatsApp"), ["notification"])
-        self.assertNotIn("integration", detect_categories("Pasien mendaftar lewat WhatsApp"))
+        categories = detect_categories("Pasien mendaftar lewat WhatsApp")
+        self.assertIn("notification", categories)
+        self.assertNotIn("integration", categories)
 
     def test_detect_categories_real_integration(self):
         self.assertIn("integration", detect_categories("The system integrates with SAP ERP"))

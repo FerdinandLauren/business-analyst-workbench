@@ -27,7 +27,7 @@ CATEGORY_TERMS: dict[str, tuple[str, ...]] = {
     "intake": (
         "form", "intake", "submit", "submission", "registration", "register",
         "request form",
-        "formulir", "pendaftaran", "pengajuan", "permohonan", "isi data",
+        "formulir", "pendaftaran", "mendaftar", "pengajuan", "permohonan", "isi data",
     ),
     "approval": (
         "approval", "approve", "approver", "sign-off", "authorization",
@@ -56,7 +56,7 @@ CATEGORY_TERMS: dict[str, tuple[str, ...]] = {
     ),
     "validation": (
         "validation", "validate", "verify", "verification", "mandatory",
-        "completeness",
+        "completeness", "required information", "required field", "mandatory field",
         "validasi", "verifikasi", "wajib", "kelengkapan", "cek data",
     ),
     "integration": (

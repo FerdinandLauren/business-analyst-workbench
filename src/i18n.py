@@ -156,6 +156,7 @@ STRINGS: dict[str, dict[str, str]] = {
         "uat.col_priority": "Priority",
         "uat.col_status": "Status",
         "uat.status_not_run": "Not run",
+        "uat.scenario": "Verify that the system can: {statement}",
         "uat.steps_approval": (
             "1. Sign in as the requester and submit a new request.\n"
             "2. Sign in as the approver and approve the request.\n"
@@ -414,6 +415,7 @@ STRINGS: dict[str, dict[str, str]] = {
         "uat.col_priority": "Prioritas",
         "uat.col_status": "Status",
         "uat.status_not_run": "Belum dijalankan",
+        "uat.scenario": "Verifikasi bahwa sistem dapat: {statement}",
         "uat.steps_approval": (
             "1. Masuk sebagai pemohon dan kirim permohonan baru.\n"
             "2. Masuk sebagai penyetuju dan setujui permohonan.\n"

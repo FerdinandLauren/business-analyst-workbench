@@ -1,0 +1,85 @@
+{
+  "name": "Procurement Intake - Human Review Demo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "procurement-intake-demo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-demo",
+      "name": "Receive Request",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "procurement-intake-demo"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body ?? $json;\\nconst required = ['requesterEmail','department','description','estimatedAmount'];\\nconst missing = required.filter((key) => body[key] === undefined || body[key] === null || String(body[key]).trim() === '');\\nconst validAmount = Number.isFinite(Number(body.estimatedAmount)) && Number(body.estimatedAmount) > 0;\\nreturn [{ json: { received: true, valid: missing.length === 0 && validAmount, missingFields: missing, amountValid: validAmount, reviewStatus: 'PENDING_HUMAN_REVIEW', approvalDecision: null, note: 'Demo only: no approval is performed.' } }];"
+      },
+      "id": "validate-demo",
+      "name": "Validate Required Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": "={{ $json.valid ? 202 : 400 }}"
+        }
+      },
+      "id": "respond-demo",
+      "name": "Return Validation Result",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        760,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Receive Request": {
+      "main": [
+        [
+          {
+            "node": "Validate Required Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Required Fields": {
+      "main": [
+        [
+          {
+            "node": "Return Validation Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "demo-version",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

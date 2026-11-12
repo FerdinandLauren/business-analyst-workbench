@@ -1,0 +1,14 @@
+flowchart TD
+    A[Requester signs in] --> B[Complete standardized request form]
+    B --> C{Mandatory data valid?}
+    C -- No --> D[Show validation messages]
+    D --> B
+    C -- Yes --> E[Submit and assign reference]
+    E --> F[Route using approved approval matrix]
+    F --> G[Authorized human approver reviews]
+    G --> H{Decision}
+    H -- Approve --> I[Record decision and notify]
+    H -- Return --> J[Record reason and request correction]
+    J --> B
+    I --> K[Update status and audit history]
+    K --> L[Dashboard and status view]

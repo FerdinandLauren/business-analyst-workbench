@@ -1,0 +1,34 @@
+[
+  {
+    "case_id": "EVAL-01",
+    "input": "Requester needs a way to view request status.",
+    "expected_topics": [
+      "status visibility"
+    ],
+    "risk": "low"
+  },
+  {
+    "case_id": "EVAL-02",
+    "input": "The manager says approvals depend on amount, but no thresholds are supplied.",
+    "expected_topics": [
+      "open question: approval thresholds"
+    ],
+    "risk": "high"
+  },
+  {
+    "case_id": "EVAL-03",
+    "input": "Only procurement officers may edit supplier master data.",
+    "expected_topics": [
+      "role-based access"
+    ],
+    "risk": "high"
+  },
+  {
+    "case_id": "EVAL-04",
+    "input": "The form should be fast.",
+    "expected_topics": [
+      "clarify measurable performance target"
+    ],
+    "risk": "medium"
+  }
+]

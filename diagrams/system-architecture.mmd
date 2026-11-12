@@ -1,0 +1,11 @@
+flowchart LR
+    U[Requester / Procurement / Manager] --> UI[Web Interface]
+    UI --> APP[Application Service]
+    APP --> IAM[Identity & Role Management]
+    APP --> WF[Workflow & Validation]
+    WF --> AUD[Audit Event Store]
+    WF --> NOTIF[Notification Service]
+    APP --> REP[Reporting Layer]
+    APP -. controlled API .-> ERP[ERP / Finance System]
+    AI[Optional AI Draft Assistant] -. suggestions only .-> APP
+    AI -. no approval authority .-> HUMAN[Authorized Human Approver]

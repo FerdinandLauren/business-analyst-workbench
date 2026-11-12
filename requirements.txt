@@ -1,0 +1,6 @@
+streamlit>=1.36,<2.0
+pandas>=2.0,<4.0
+python-dotenv>=1.0,<2.0
+openai>=1.30,<3.0
+# Pinned: newer pyarrow wheels are blocked by Smart App Control on this machine
+pyarrow==21.0.0

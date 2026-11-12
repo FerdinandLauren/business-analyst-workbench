@@ -1,0 +1,8 @@
+flowchart TD
+    A[Requester prepares email or spreadsheet] --> B[Procurement checks request manually]
+    B --> C{Information complete?}
+    C -- No --> D[Return request for correction]
+    D --> A
+    C -- Yes --> E[Coordinate approval by email]
+    E --> F[Requester asks for status]
+    F --> G[Records remain distributed]

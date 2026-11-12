@@ -119,7 +119,7 @@ PAIN_TERMS: dict[str, tuple[str, ...]] = {
 
 NFR_TERMS: dict[str, tuple[str, ...]] = {
     "security": (
-        "keamanan", "security", "enkripsi", "terenkripsi", "encryption",
+        "keamanan", "security", "enkripsi", "terenkripsi", "encryption", "encrypt",
         "kerahasiaan", "confidentiality",
     ),
     "performance": (

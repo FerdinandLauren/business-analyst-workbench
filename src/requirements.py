@@ -216,8 +216,8 @@ def extract_requirements(problem: str, lang: str = "en") -> list[Requirement]:
     return requirements
 
 
-def requirements_to_rows(reqs: list[Requirement], lang: str = "en") -> list[dict[str, str]]:
-    """Localized rows for tables and CSV downloads."""
+def display_fields(req: Requirement, lang: str = "en") -> dict[str, str]:
+    """Human-readable values for one requirement (machine keys stay internal)."""
     type_label = {
         "Functional": "req.type_functional",
         "Non-functional": "req.type_nonfunctional",
@@ -231,6 +231,16 @@ def requirements_to_rows(reqs: list[Requirement], lang: str = "en") -> list[dict
         "Medium": "req.priority_medium",
         "Low": "req.priority_low",
     }
+    return {
+        "type": t(type_label[req.type], lang),
+        "category": t(f"cat.{req.category}", lang),
+        "priority": t(priority_label[req.priority], lang),
+        "status": t(status_label[req.status], lang),
+    }
+
+
+def requirements_to_rows(reqs: list[Requirement], lang: str = "en") -> list[dict[str, str]]:
+    """Localized rows for tables and CSV downloads."""
     headers = {
         "id": t("req.col_id", lang),
         "type": t("req.col_type", lang),
@@ -241,12 +251,13 @@ def requirements_to_rows(reqs: list[Requirement], lang: str = "en") -> list[dict
     }
     rows = []
     for req in reqs:
+        display = display_fields(req, lang)
         rows.append({
             headers["id"]: req.id,
-            headers["type"]: t(type_label[req.type], lang),
-            headers["category"]: t(f"cat.{req.category}", lang),
+            headers["type"]: display["type"],
+            headers["category"]: display["category"],
             headers["statement"]: req.statement,
-            headers["priority"]: t(priority_label[req.priority], lang),
-            headers["status"]: t(status_label[req.status], lang),
+            headers["priority"]: display["priority"],
+            headers["status"]: display["status"],
         })
     return rows

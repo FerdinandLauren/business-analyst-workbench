@@ -1,7 +1,12 @@
 """Draft document generation with optional AI and safe local fallback."""
 from __future__ import annotations
+
 import os
-from typing import Dict, List
+from typing import Any
+
+from src.brd import brd_markdown as _brd_markdown
+from src.requirements import Requirement
+
 
 def generate_with_ai(prompt: str) -> str | None:
     """Return AI response when configured; otherwise None. Never logs secrets."""
@@ -28,61 +33,34 @@ def generate_with_ai(prompt: str) -> str | None:
     except Exception:
         return None
 
+
+def _as_requirement(item: Any) -> Requirement:
+    """Accept both Requirement objects and the legacy display dictionaries."""
+    if isinstance(item, Requirement):
+        return item
+    status = "needs_review" if "review" in str(item.get("theme", "")).lower() else "draft"
+    return Requirement(
+        id=item["id"],
+        type=item.get("type", "Functional"),
+        category=item.get("category", "unclassified"),
+        statement=item["statement"],
+        priority=item.get("priority", "Medium"),
+        status=status,
+        clarification="",
+        source_sentence=item.get("source_sentence", item["statement"]),
+    )
+
+
 def brd_markdown(project_name: str, problem: str, objective: str,
                  stakeholders: str, scope_in: str, scope_out: str,
-                 requirements: List[Dict[str, str]]) -> str:
-    req_lines = "\n".join(
-        f"| {r['id']} | {r['type']} | {r['statement']} | Draft |" for r in requirements
+                 requirements: list, lang: str = "en", process: dict | None = None) -> str:
+    """Delegate to the generic BRD builder, keeping the old call signature."""
+    reqs = [_as_requirement(item) for item in requirements]
+    return _brd_markdown(
+        project_name, problem, objective, stakeholders, scope_in, scope_out,
+        reqs, lang=lang, process=process,
     )
-    return f"""# Business Requirements Document (Draft)
 
-**Project:** {project_name}  
-**Version:** 0.1  
-**Status:** Draft for stakeholder validation
-
-## 1. Executive summary
-{objective}
-
-## 2. Business problem
-{problem}
-
-## 3. Business objectives
-- Reduce manual handoffs and improve process visibility.
-- Standardize required information and approval records.
-- Provide a traceable view of request status.
-
-## 4. Stakeholders
-{stakeholders}
-
-## 5. Scope
-### In scope
-{scope_in}
-
-### Out of scope
-{scope_out}
-
-## 6. Candidate requirements
-| ID | Type | Requirement | Status |
-|---|---|---|---|
-{req_lines}
-
-## 7. Assumptions and constraints
-- The scenario is fictional and requires stakeholder validation.
-- Approval rules, thresholds, and role permissions must be confirmed by the business owner.
-- Any integration with an ERP is subject to API, security, and data-governance review.
-
-## 8. Open questions
-1. What approval matrix and monetary thresholds apply?
-2. Which fields are mandatory for each request category?
-3. What service-level targets should be measured?
-4. Which system is the source of truth for suppliers and cost centers?
-
-## 9. Acceptance approach
-Business representatives review each requirement, agree acceptance criteria, and execute UAT in a controlled test environment.
-
----
-*Generated as a draft by AI Business Analyst Workbench. Review and approve before use.*
-"""
 
 def ai_or_fallback(prompt: str, fallback: str) -> tuple[str, str]:
     result = generate_with_ai(prompt)

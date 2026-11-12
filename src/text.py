@@ -89,11 +89,15 @@ CATEGORY_TERMS: dict[str, tuple[str, ...]] = {
 # Five pain groups. Statement verbs compose with the category noun, which is why
 # ten narrow pain keys were collapsed into these groups.
 PAIN_TERMS: dict[str, tuple[str, ...]] = {
-    "automation": (
-        "manual", "manualnya", "tulis tangan", "spreadsheet", "excel", "buku",
-        "kertas", "ulang", "retype", "input ulang",
-        "lambat", "lama", "tertunda", "delay", "slow", "antre panjang",
-        "susah", "sulit", "ribet", "merepotkan", "membingungkan", "confusing",
+    "consolidation": (
+        "bentrok", "benturan", "tumpang tindih", "dobel jadwal",
+        "double booked", "conflict", "overlapping",
+    ),
+    "visibility": (
+        "tidak tahu", "tidak ada yang tahu", "tidak jelas", "tidak terlacak",
+        "tidak ada kabar", "unknown", "unclear", "no visibility",
+        "hilang", "tercecer", "tidak tercatat", "lost", "missing record",
+        "tidak ada bukti",
     ),
     "accuracy": (
         "salah", "keliru", "error", "kesalahan", "typo", "tidak akurat",
@@ -104,15 +108,11 @@ PAIN_TERMS: dict[str, tuple[str, ...]] = {
         "tidak lengkap", "kurang lengkap", "kosong", "belum diisi", "missing",
         "incomplete",
     ),
-    "consolidation": (
-        "bentrok", "benturan", "tumpang tindih", "dobel jadwal",
-        "double booked", "conflict", "overlapping",
-    ),
-    "visibility": (
-        "tidak tahu", "tidak ada yang tahu", "tidak jelas", "tidak terlacak",
-        "tidak ada kabar", "unknown", "unclear", "no visibility",
-        "hilang", "tercecer", "tidak tercatat", "lost", "missing record",
-        "tidak ada bukti",
+    "automation": (
+        "manual", "manualnya", "tulis tangan", "spreadsheet", "excel", "buku",
+        "kertas", "ulang", "retype", "input ulang",
+        "lambat", "lama", "tertunda", "delay", "slow", "antre panjang",
+        "susah", "sulit", "ribet", "merepotkan", "membingungkan", "confusing",
     ),
     "none": (),
 }

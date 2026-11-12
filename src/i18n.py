@@ -61,7 +61,9 @@ STRINGS: dict[str, dict[str, str]] = {
         "req.type_nonfunctional": "Non-functional",
         "req.status_draft": "Draft",
         "req.status_needs_review": "Needs analyst review",
-        "req.clarification": (
+        "req.priority_high": "High",
+        "req.priority_medium": "Medium",
+        "req.priority_low": "Low",        "req.clarification": (
             'Clarify with the stakeholder: what outcome is expected for "{fragment}"?'
         ),
         "req.statement_unclassified": 'The system shall support: "{fragment}".',
@@ -316,6 +318,9 @@ STRINGS: dict[str, dict[str, str]] = {
         "req.type_nonfunctional": "Non-fungsional",
         "req.status_draft": "Draf",
         "req.status_needs_review": "Perlu tinjauan analis",
+        "req.priority_high": "Tinggi",
+        "req.priority_medium": "Sedang",
+        "req.priority_low": "Rendah",
         "req.clarification": (
             'Konfirmasi ke stakeholder: hasil apa yang diharapkan dari "{fragment}"?'
         ),

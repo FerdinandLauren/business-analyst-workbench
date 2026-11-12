@@ -21,6 +21,13 @@ STRINGS: dict[str, dict[str, str]] = {
         ),
         "ui.sidebar_project": "Project name",
         "ui.language": "Language",
+        "ui.problem_input": "Business problem / stakeholder notes",
+        "ui.objective": "Business objective",
+        "ui.stakeholders": "Stakeholders",
+        "ui.scope_in": "In scope",
+        "ui.scope_out": "Out of scope",
+        "ui.as_is": "As-Is process",
+        "ui.to_be": "To-Be process",
         "ui.tab_requirements": "1. Requirement Analyzer",
         "ui.tab_brd": "2. BRD Draft",
         "ui.tab_process": "3. Process Analyzer",
@@ -156,7 +163,7 @@ STRINGS: dict[str, dict[str, str]] = {
         "uat.col_priority": "Priority",
         "uat.col_status": "Status",
         "uat.status_not_run": "Not run",
-        "uat.scenario": "Verify that the system can: {statement}",
+        "uat.scenario": "Scenario: {statement}",
         "uat.steps_approval": (
             "1. Sign in as the requester and submit a new request.\n"
             "2. Sign in as the approver and approve the request.\n"
@@ -298,6 +305,13 @@ STRINGS: dict[str, dict[str, str]] = {
         ),
         "ui.sidebar_project": "Nama proyek",
         "ui.language": "Bahasa",
+        "ui.problem_input": "Masalah bisnis / catatan stakeholder",
+        "ui.objective": "Tujuan bisnis",
+        "ui.stakeholders": "Stakeholder",
+        "ui.scope_in": "Dalam ruang lingkup",
+        "ui.scope_out": "Di luar ruang lingkup",
+        "ui.as_is": "Proses As-Is",
+        "ui.to_be": "Proses To-Be",
         "ui.tab_requirements": "1. Analisis Kebutuhan",
         "ui.tab_brd": "2. Draf BRD",
         "ui.tab_process": "3. Analisis Proses",
@@ -434,7 +448,7 @@ STRINGS: dict[str, dict[str, str]] = {
         "uat.col_priority": "Prioritas",
         "uat.col_status": "Status",
         "uat.status_not_run": "Belum dijalankan",
-        "uat.scenario": "Verifikasi bahwa sistem dapat: {statement}",
+        "uat.scenario": "Skenario: {statement}",
         "uat.steps_approval": (
             "1. Masuk sebagai pemohon dan kirim permohonan baru.\n"
             "2. Masuk sebagai penyetuju dan setujui permohonan.\n"
@@ -553,7 +567,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "proses baru?"
         ),
         "brd.lang_english": "Inggris",
-        "brd.lang_indonesian": "Bahasa Indonesia",
+        "brd.lang_indonesian": "Indonesia",
         "brd.footer": (
             "*Dihasilkan sebagai draf oleh Business Analyst Workbench. Tinjau dan "
             "setujui sebelum dipakai.*"

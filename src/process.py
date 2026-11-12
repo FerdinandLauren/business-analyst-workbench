@@ -6,7 +6,7 @@ instead of trusting a black box.
 from __future__ import annotations
 
 from src.i18n import t
-from src.text import has_term, matched_terms
+from src.text import matched_terms
 
 AREA_KEYS = ("visibility", "validation", "approval", "notification", "auditability")
 
